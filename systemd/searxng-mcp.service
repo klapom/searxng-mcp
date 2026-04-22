@@ -1,0 +1,21 @@
+[Unit]
+Description=SearXNG MCP — REST (32700) + MCP Streamable-HTTP (33700)
+After=network-online.target searxng.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/projects/searxng-mcp
+# Process env wins over .env per pydantic-settings default (ADR-010).
+Environment=LISTEN_PORT=32700
+Environment=MCP_PORT=33700
+Environment=LOG_LEVEL=info
+Environment=SEARXNG_URL=http://localhost:8888
+ExecStart=%h/.local/bin/uv run --directory %h/projects/searxng-mcp searxng-mcp-http
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
