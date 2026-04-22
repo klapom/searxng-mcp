@@ -1,26 +1,25 @@
 """Stdio entry point — ``python -m searxng_mcp`` or ``searxng-mcp``.
 
-Claude Desktop speaks stdio. This is the *only* surface needed for that
-consumer; REST + Streamable-HTTP live in ``http_server.py``.
+Thin wrapper over ``mcp_toolkit_py.stdio.run_stdio``.
 """
 
 from __future__ import annotations
 
+from mcp_toolkit_py.stdio import run_stdio
+
 from searxng_mcp import __service_name__, __version__
 from searxng_mcp.config import get_settings
-from searxng_mcp.logging import setup_logging
-from searxng_mcp.metrics import init_metrics
+from searxng_mcp.server import mcp
 
 
 def main_stdio() -> None:
     settings = get_settings()
-    setup_logging(settings.log_level)
-    init_metrics(__service_name__, __version__)
-
-    # Import *after* logging is configured so FastMCP uses our handlers.
-    from searxng_mcp.server import mcp
-
-    mcp.run()  # defaults to stdio transport
+    run_stdio(
+        mcp,
+        service_name=__service_name__,
+        version=__version__,
+        log_level=settings.log_level,
+    )
 
 
 if __name__ == "__main__":

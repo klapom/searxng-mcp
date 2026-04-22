@@ -57,7 +57,9 @@ async def test_web_search_with_answers_infoboxes_suggestions() -> None:
                     {
                         "infobox": "Python",
                         "content": "High-level language",
-                        "urls": [{"title": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Python"}],
+                        "urls": [
+                            {"title": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Python"}
+                        ],
                     }
                 ],
                 suggestions=["python tutorial", "python download", "python docs"],

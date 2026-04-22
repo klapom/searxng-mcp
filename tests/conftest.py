@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import pytest
+from mcp_toolkit_py.logging import setup_logging
 
 from searxng_mcp.config import get_settings
-from searxng_mcp.logging import setup_logging
 
 
 @pytest.fixture(autouse=True, scope="session")
