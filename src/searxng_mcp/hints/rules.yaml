@@ -1,0 +1,32 @@
+# Follow-up hints for searxng-mcp (Sprint 16.7).
+# See docs/internal/followup-hints.md / mcp_toolkit_py.hints for the engine.
+
+version: 1
+
+tools:
+
+  web_search:
+    hints:
+      - tool: news_search
+        rationale: "Tagesaktuelle Quellen zum gleichen Thema prüfen"
+      - tool: image_search
+        rationale: "Visuelle Belege / Screenshots zum gleichen Thema"
+      - tool: web_search
+        when: "request.arguments.max_results < 5"
+        rationale: "Breitere Suche mit höherem Result-Limit"
+        arguments_template:
+          max_results: "20"
+
+  news_search:
+    hints:
+      - tool: web_search
+        rationale: "Tiefergehende, weniger zeit-gefilterte Quellen zum Thema"
+      - tool: image_search
+        rationale: "Visuelle Belege zur News-Story"
+
+  image_search:
+    hints:
+      - tool: web_search
+        rationale: "Textquellen / Kontext zu den gefundenen Bildern"
+      - tool: news_search
+        rationale: "Aktuelle Berichterstattung zum Bild-Motiv"

@@ -29,4 +29,20 @@ from searxng_mcp.tools import (  # noqa: E402, F401
     web_search,
 )
 
-__all__ = ["__service_name__", "__version__", "mcp"]
+
+# Sprint 16.7 — Follow-up hints. Opt-in via MCP_FOLLOWUP_HINTS_ENABLED.
+# Lazy install: called by entry points after full server import (avoids
+# partial-import crashes during test collection — see ot-knowledge Sprint 15.8).
+def install_hints() -> None:
+    """Wire follow-up hints into the FastMCP server. Idempotent."""
+    from pathlib import Path
+
+    from mcp_toolkit_py.hints import install_followup_hints
+
+    rules_path = Path(__file__).parent / "hints" / "rules.yaml"
+    registered = set(mcp._tool_manager._tools)
+    known_public = {t for t in registered if not t.startswith("internal_")}
+    install_followup_hints(mcp, rules_path=rules_path, known_tools=known_public)
+
+
+__all__ = ["__service_name__", "__version__", "install_hints", "mcp"]
